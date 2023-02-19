@@ -362,7 +362,8 @@ double VelocityProfileGenerator::calc_distance(const double& v_i,
     // v_i (initial velocity) to v_f (final velocity) at a constant
     // acceleration/deceleration "a". HINT look at the description of this
     // function. Make sure you handle div by 0
-    d = 0;  // <- Update
+    const double duration = (v_f - v_i) / a;
+    d = (v_i + v_f) * duration / 2.0;  // <- Update
   }
   return d;
 }
@@ -379,13 +380,13 @@ a - the acceleration in m / s ^ 2.
 double VelocityProfileGenerator::calc_final_speed(const double& v_i,
                                                   const double& a,
                                                   const double& d) const {
-  double v_f{0.0};
+  double v_f{std::sqrt(v_i * v_i + 2.0 * a * d)};
   // TODO-calc final speed: Calculate the final distance. HINT: look at the
   // description of this function. Make sure you handle negative discriminant
   // and make v_f = 0 in that case. If the discriminant is inf or nan return
   // infinity
 
-  double disc = 0;  // <- Fix this
+  double disc = v_i * v_i + 2.0 * a * d;  // <- Fix this
   if (disc <= 0.0) {
     v_f = 0.0;
   } else if (disc == std::numeric_limits<double>::infinity() ||
